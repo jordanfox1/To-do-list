@@ -1,0 +1,56 @@
+<p id="notice"><%= notice %></p>
+
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Description</th>
+      <th>Completed</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @lists.each do |list| %>
+      
+      <% if list.completed %>
+        <tr class="table-secondary">
+          <td class="striker"><%= link_to list.description, edit_list_path(list) %><% list.description %></td>
+          <td><%= list.completed %>
+              <%= form_with(model: list) do |form| %> <td/>
+              <%= form.text_field :description, type: 'hidden' %>
+              <%= form.check_box :completed, :checked => false, :style => "visibility: hidden"  %>
+              <%= form.submit "Uncheck", class: "btn btn-info" %> 
+              <% end %>
+          <td/>
+          <% link_to 'Edit', edit_list_path(list) %>
+          <center><%= link_to 'Delete', list, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-outline-danger" %></center>
+        </tr>
+        <% else %>
+          <tr>
+          <td><% list.description %> <%= link_to list.description, edit_list_path(list) %></td>
+          <td><%= list.completed %>
+         
+
+          <%= form_with(model: list) do |form| %> <td/>
+            <%= form.text_field :description, type: 'hidden' %>
+            <%= form.check_box :completed, :checked => true, :style => "visibility: hidden"  %>
+            <%= form.submit "Check", class: "btn btn-primary" %>
+
+            <% end %>
+
+
+          <td><% link_to 'Edit', edit_list_path(list) %>
+          <center><%= link_to 'Delete', list, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-outline-danger" %></center></td>
+        </tr>
+        <% end %>
+    <% end %>
+  </tbody>
+</table>
+<% link_to "Add Item", new_list_path, class: 'btn btn-primary' %>
+<br/><br/>
+
+<%= link_to "Clear Marked Items", home_clear_path, class: 'btn btn-outline-success', data: { confirm: 'Are you sure?' } %> || <%= link_to "Clear All Items", home_clearall_path, class: 'btn btn-outline-danger', data: { confirm: 'Are you sure?' }  %>
+
+
+
